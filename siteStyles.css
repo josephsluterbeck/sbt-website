@@ -33,10 +33,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 1000;
     transition: var(--hover-transition);
     min-width: 900px;
+    border: 1px solid black;
 }
 
 /* Style for company name on cover */
@@ -496,8 +497,9 @@ section {
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
     .navbar {
-        background-color: transparent;
+        background-color: rgba(0, 0, 0, 0.6);
         min-width: unset;  /* Remove min-width constraint for mobile */
+        padding: 0.5rem 1rem;
     }
 
     .nav-links {
@@ -507,7 +509,7 @@ section {
         left: 0;
         width: 100%;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.95);
+        background-color: rgba(0, 0, 0, 0.6);
         padding: 2rem;
         flex-direction: column;
         align-items: center;
@@ -696,11 +698,6 @@ section {
 
     .company-name {
         font-size: 0.8rem;
-        line-height: 1.6;
-        padding: 0.3rem 0.5rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 
     .nav-item span {
