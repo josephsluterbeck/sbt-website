@@ -611,10 +611,9 @@ section {
     }
 
     .cover h1 {
-        font-size: 2rem;
+        font-size: 1.5rem;
         letter-spacing: 1px;
         margin-bottom: 1rem;
-        padding: 0 1rem;
     }
 
     .cover-text {
