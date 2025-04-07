@@ -695,7 +695,8 @@ section {
     }
 
     .company-name {
-        font-size: 1.2rem; 
+        font-size: 1.2rem;
+        padding: 0.5rem 1rem;
     }
 
     .nav-item span {
@@ -703,7 +704,7 @@ section {
     }
 
     .navbar {
-        padding: 1.2rem 2rem; 
+        padding: 0.5rem 1rem; 
     }
 
     /* Mobile styles - ensure consistency */
