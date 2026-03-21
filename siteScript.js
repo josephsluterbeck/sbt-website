@@ -96,8 +96,12 @@ function formatPostedDate(isoDate) {
     return `Posted ${date.toLocaleDateString()}`;
 }
 
-function portableTextToPlainText(value) {
-    if (!value) {
+/**
+ * Walks Portable Text (and similar nested shapes) and returns plain text only.
+ * Never relies on String(object) — that produces "[object Object]".
+ */
+function portableTextToPlainText(value, depth = 0) {
+    if (value == null || depth > 30) {
         return '';
     }
 
@@ -105,33 +109,47 @@ function portableTextToPlainText(value) {
         return value;
     }
 
-    if (!Array.isArray(value)) {
+    if (typeof value === 'number' || typeof value === 'boolean') {
+        return String(value);
+    }
+
+    if (Array.isArray(value)) {
+        const parts = value
+            .map(item => portableTextToPlainText(item, depth + 1))
+            .filter(part => part && part.length);
+        return parts.join('\n\n');
+    }
+
+    if (typeof value === 'object') {
+        if (typeof value.text === 'string') {
+            return value.text;
+        }
+        if (Array.isArray(value.children)) {
+            return value.children
+                .map(child => portableTextToPlainText(child, depth + 1))
+                .join('');
+        }
+        if (Array.isArray(value.body)) {
+            return portableTextToPlainText(value.body, depth + 1);
+        }
         return '';
     }
 
-    return value
-        .filter(block => block && block._type === 'block' && Array.isArray(block.children))
-        .map(block =>
-            block.children
-                .filter(child => child && typeof child.text === 'string')
-                .map(child => child.text)
-                .join('')
-        )
-        .filter(Boolean)
-        .join('\n\n');
+    return '';
 }
 
 function getSafeDescription(job) {
-    if (typeof job.descriptionText === 'string' && job.descriptionText.trim()) {
-        return job.descriptionText.trim();
+    const fromPtText = portableTextToPlainText(job.descriptionText);
+    if (fromPtText.trim()) {
+        return fromPtText.trim();
     }
 
-    const portableText = portableTextToPlainText(job.description);
-    if (portableText.trim()) {
-        return portableText.trim();
+    const fromDescription = portableTextToPlainText(job.description);
+    if (fromDescription.trim()) {
+        return fromDescription.trim();
     }
 
-    if (typeof job.description === 'string') {
+    if (typeof job.description === 'string' && job.description.trim()) {
         return job.description.trim();
     }
 
@@ -182,7 +200,7 @@ function renderJobs(jobs) {
         const meta = document.createElement('p');
         meta.className = 'job-meta';
         const location = job.location ? `Location: ${job.location}` : 'Location: N/A';
-        const posted = formatPostedDate(job.postedAt || job._createdAt);
+        const posted = formatPostedDate(job.postedAt || job.publishedAt || job._createdAt);
         meta.textContent = posted ? `${location} • ${posted}` : location;
         card.appendChild(meta);
 
