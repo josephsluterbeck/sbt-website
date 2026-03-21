@@ -590,19 +590,6 @@ section {
     box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.12);
 }
 
-.jobs-apply-form input[type="file"] {
-    font-family: "Bitter", serif;
-    font-size: 0.95rem;
-    max-width: 100%;
-}
-
-.jobs-apply-form .form-hint {
-    font-size: 0.85rem;
-    color: var(--body-text);
-    margin-top: 0.35rem;
-    margin-bottom: 0;
-}
-
 .jobs-apply-form .form-note {
     font-size: 0.85rem;
     color: var(--body-text);

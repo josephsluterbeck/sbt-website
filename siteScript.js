@@ -73,13 +73,16 @@ document.addEventListener('DOMContentLoaded', function() {
 const SANITY_PROJECT_ID = 'orxxqp7k';
 const SANITY_ORGANIZATION_ID = 'oCAJBUVjO';
 const SANITY_DATASET = 'production';
-const SANITY_QUERY = encodeURIComponent(`*[_type in ["jobPost", "job"]] | order(coalesce(postedAt, _createdAt) desc){
+const SANITY_QUERY = encodeURIComponent(`*[_type in ["jobPost", "job"]] | order(coalesce(postedAt, publishedAt, _createdAt) desc){
     title,
+    company,
     location,
+    salary,
     description,
     "descriptionText": pt::text(description),
     applyLink,
     postedAt,
+    publishedAt,
     _createdAt
 }`);
 
@@ -257,9 +260,17 @@ function renderJobs(jobs) {
 
         const meta = document.createElement('p');
         meta.className = 'job-meta';
-        const location = job.location ? `Location: ${job.location}` : 'Location: N/A';
+        const metaParts = [];
+        metaParts.push(job.location ? `Location: ${job.location}` : 'Location: N/A');
+        const salaryStr = job.salary != null && String(job.salary).trim() ? String(job.salary).trim() : '';
+        if (salaryStr) {
+            metaParts.push(`Salary: ${salaryStr}`);
+        }
         const posted = formatPostedDate(job.postedAt || job.publishedAt || job._createdAt);
-        meta.textContent = posted ? `${location} • ${posted}` : location;
+        if (posted) {
+            metaParts.push(posted);
+        }
+        meta.textContent = metaParts.join(' • ');
         card.appendChild(meta);
 
         const plainDescription = getSafeDescription(job);
