@@ -172,6 +172,31 @@ function getSafeExternalUrl(rawUrl) {
     }
 }
 
+/**
+ * After Formspree redirects to #apply or legacy #jobs, the jobs list loads async and
+ * pushes the form down. Re-scroll once layout is stable so the apply form is visible.
+ */
+function scheduleScrollToApplyFormIfHash() {
+    const h = (window.location.hash || '').toLowerCase();
+    if (h !== '#apply' && h !== '#jobs') {
+        return;
+    }
+
+    const el = document.getElementById('apply');
+    if (!el) {
+        return;
+    }
+
+    const scrollOnce = () => {
+        el.scrollIntoView({ behavior: 'auto', block: 'start' });
+    };
+
+    scrollOnce();
+    requestAnimationFrame(scrollOnce);
+    setTimeout(scrollOnce, 50);
+    setTimeout(scrollOnce, 250);
+}
+
 function populateApplyPositionSelect(jobs) {
     const select = document.getElementById('apply-position');
     if (!select) {
@@ -286,6 +311,7 @@ function loadJobs() {
         })
         .finally(() => {
             clearTimeout(timeoutId);
+            scheduleScrollToApplyFormIfHash();
         });
 }
 

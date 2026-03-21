@@ -517,7 +517,25 @@ section {
     color: var(--body-text);
     font-size: 1rem;
     line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.jobs-apply-resume-note {
+    font-family: "Bitter", serif;
+    color: var(--body-text);
+    font-size: 0.95rem;
+    line-height: 1.65;
     margin-bottom: 1.5rem;
+    padding: 1rem 1.1rem;
+    background-color: var(--primary-bg);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-text);
+}
+
+/* Anchor scroll: fixed navbar clears the apply form */
+#apply {
+    scroll-margin-top: 6rem;
 }
 
 .jobs-apply-form .form-row {
