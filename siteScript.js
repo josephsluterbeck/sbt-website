@@ -72,12 +72,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const SANITY_PROJECT_ID = 'orxxqp7k';
 const SANITY_DATASET = 'production';
-const SANITY_QUERY = encodeURIComponent(`*[_type == "jobPost"] | order(postedAt desc){
+const SANITY_QUERY = encodeURIComponent(`*[_type in ["jobPost", "job"]] | order(coalesce(postedAt, _createdAt) desc){
     title,
     location,
     description,
     applyLink,
-    postedAt
+    postedAt,
+    _createdAt
 }`);
 
 function formatPostedDate(isoDate) {
@@ -121,7 +122,7 @@ function renderJobs(jobs) {
         const meta = document.createElement('p');
         meta.className = 'job-meta';
         const location = job.location ? `Location: ${job.location}` : 'Location: N/A';
-        const posted = formatPostedDate(job.postedAt);
+        const posted = formatPostedDate(job.postedAt || job._createdAt);
         meta.textContent = posted ? `${location} • ${posted}` : location;
         card.appendChild(meta);
 
