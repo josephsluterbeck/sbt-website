@@ -427,6 +427,75 @@ section {
     color: var(--body-text);
 }
 
+/* Jobs Section */
+.jobs {
+    background-color: var(--secondary-bg);
+    padding-top: 100px;
+    position: relative;
+    z-index: 1;
+}
+
+.jobs-container {
+    max-width: 1100px;
+    margin: 100px auto 0;
+    padding: 0 2rem;
+}
+
+.jobs-list {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.job-card {
+    background-color: var(--primary-bg);
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: var(--card-shadow);
+}
+
+.job-title {
+    font-family: "Young Serif", serif;
+    font-size: 1.45rem;
+    margin-bottom: 0.25rem;
+    color: var(--primary-text);
+}
+
+.job-meta {
+    color: var(--body-text);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+}
+
+.job-description {
+    color: var(--body-text);
+    line-height: 1.7;
+}
+
+.job-apply {
+    display: inline-block;
+    margin-top: 0.85rem;
+    text-decoration: none;
+    border-radius: 22px;
+    padding: 0.55rem 1rem;
+    background-color: var(--primary-text);
+    color: var(--primary-bg);
+    transition: var(--hover-transition);
+}
+
+.job-apply:hover {
+    background-color: var(--body-text);
+}
+
+.jobs-empty,
+.jobs-error {
+    background-color: var(--primary-bg);
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    color: var(--body-text);
+}
+
 .section-header {
     position: absolute;
     top: 20px;
@@ -685,6 +754,19 @@ section {
         text-align: center;
         margin: 0 auto;
         max-width: 200px;
+    }
+
+    .jobs-container {
+        margin-top: 70px;
+        padding: 0 1rem;
+    }
+
+    .job-card {
+        padding: 1rem;
+    }
+
+    .job-title {
+        font-size: 1.2rem;
     }
 
     .card h3 {

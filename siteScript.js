@@ -63,3 +63,103 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check initial scroll position
     checkScroll();
 }); 
+
+const SANITY_PROJECT_ID = 'orxxqp7k';
+const SANITY_DATASET = 'production';
+const SANITY_QUERY = encodeURIComponent(`*[_type == "jobPost"] | order(postedAt desc){
+    title,
+    location,
+    description,
+    applyLink,
+    postedAt
+}`);
+
+function formatPostedDate(isoDate) {
+    if (!isoDate) {
+        return '';
+    }
+
+    const date = new Date(isoDate);
+    if (Number.isNaN(date.getTime())) {
+        return '';
+    }
+
+    return `Posted ${date.toLocaleDateString()}`;
+}
+
+function renderJobs(jobs) {
+    const jobsContainer = document.getElementById('jobs-list');
+    if (!jobsContainer) {
+        return;
+    }
+
+    jobsContainer.innerHTML = '';
+
+    if (!jobs || jobs.length === 0) {
+        const emptyState = document.createElement('p');
+        emptyState.className = 'jobs-empty';
+        emptyState.textContent = 'No job openings right now.';
+        jobsContainer.appendChild(emptyState);
+        return;
+    }
+
+    jobs.forEach(job => {
+        const card = document.createElement('article');
+        card.className = 'job-card';
+
+        const title = document.createElement('h3');
+        title.className = 'job-title';
+        title.textContent = job.title || 'Untitled Position';
+        card.appendChild(title);
+
+        const meta = document.createElement('p');
+        meta.className = 'job-meta';
+        const location = job.location ? `Location: ${job.location}` : 'Location: N/A';
+        const posted = formatPostedDate(job.postedAt);
+        meta.textContent = posted ? `${location} • ${posted}` : location;
+        card.appendChild(meta);
+
+        if (job.description) {
+            const description = document.createElement('p');
+            description.className = 'job-description';
+            description.textContent = job.description;
+            card.appendChild(description);
+        }
+
+        if (job.applyLink) {
+            const apply = document.createElement('a');
+            apply.className = 'job-apply';
+            apply.href = job.applyLink;
+            apply.target = '_blank';
+            apply.rel = 'noopener noreferrer';
+            apply.textContent = 'Apply Now';
+            card.appendChild(apply);
+        }
+
+        jobsContainer.appendChild(card);
+    });
+}
+
+function loadJobs() {
+    const jobsContainer = document.getElementById('jobs-list');
+    if (!jobsContainer) {
+        return;
+    }
+
+    const apiUrl = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2026-03-21/data/query/${SANITY_DATASET}?query=${SANITY_QUERY}`;
+
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed with status ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => renderJobs(data.result || []))
+        .catch(error => {
+            console.error('Sanity fetch error:', error);
+            jobsContainer.innerHTML = '<p class="jobs-error">Error loading jobs.</p>';
+        });
+}
+
+document.addEventListener('DOMContentLoaded', loadJobs);
