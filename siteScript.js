@@ -77,6 +77,7 @@ const SANITY_QUERY = encodeURIComponent(`*[_type in ["jobPost", "job"]] | order(
     title,
     location,
     description,
+    "descriptionText": pt::text(description),
     applyLink,
     postedAt,
     _createdAt
@@ -120,6 +121,39 @@ function portableTextToPlainText(value) {
         .join('\n\n');
 }
 
+function getSafeDescription(job) {
+    if (typeof job.descriptionText === 'string' && job.descriptionText.trim()) {
+        return job.descriptionText.trim();
+    }
+
+    const portableText = portableTextToPlainText(job.description);
+    if (portableText.trim()) {
+        return portableText.trim();
+    }
+
+    if (typeof job.description === 'string') {
+        return job.description.trim();
+    }
+
+    return '';
+}
+
+function getSafeExternalUrl(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') {
+        return null;
+    }
+
+    try {
+        const parsed = new URL(rawUrl);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+            return parsed.href;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+}
+
 function renderJobs(jobs) {
     const jobsContainer = document.getElementById('jobs-list');
     if (!jobsContainer) {
@@ -152,7 +186,7 @@ function renderJobs(jobs) {
         meta.textContent = posted ? `${location} • ${posted}` : location;
         card.appendChild(meta);
 
-        const plainDescription = portableTextToPlainText(job.description);
+        const plainDescription = getSafeDescription(job);
         if (plainDescription) {
             const description = document.createElement('p');
             description.className = 'job-description';
@@ -160,10 +194,11 @@ function renderJobs(jobs) {
             card.appendChild(description);
         }
 
-        if (job.applyLink) {
+        const safeApplyUrl = getSafeExternalUrl(job.applyLink);
+        if (safeApplyUrl) {
             const apply = document.createElement('a');
             apply.className = 'job-apply';
-            apply.href = job.applyLink;
+            apply.href = safeApplyUrl;
             apply.target = '_blank';
             apply.rel = 'noopener noreferrer';
             apply.textContent = 'Apply Now';
