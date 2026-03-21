@@ -4,20 +4,26 @@ const closeMenu = document.querySelector('.close-menu');
 const navLinks = document.querySelector('.nav-links');
 const navbar = document.querySelector('.navbar');
 
-hamburger.addEventListener('click', () => {
-    navLinks.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-});
+if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+    });
+}
 
-closeMenu.addEventListener('click', () => {
-    navLinks.classList.remove('active');
-    document.body.style.overflow = ''; // Re-enable scrolling
-});
+if (closeMenu && navLinks) {
+    closeMenu.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        document.body.style.overflow = ''; // Re-enable scrolling
+    });
+}
 
 // Close mobile menu when clicking a link
 document.querySelectorAll('.nav-item').forEach(link => {
     link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
+        if (navLinks) {
+            navLinks.classList.remove('active');
+        }
         document.body.style.overflow = ''; // Re-enable scrolling
     });
 });
@@ -147,8 +153,10 @@ function loadJobs() {
     }
 
     const apiUrl = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2026-03-21/data/query/${SANITY_DATASET}?query=${SANITY_QUERY}`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-    fetch(apiUrl)
+    fetch(apiUrl, { signal: controller.signal })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Failed with status ${response.status}`);
@@ -159,6 +167,9 @@ function loadJobs() {
         .catch(error => {
             console.error('Sanity fetch error:', error);
             jobsContainer.innerHTML = '<p class="jobs-error">Error loading jobs.</p>';
+        })
+        .finally(() => {
+            clearTimeout(timeoutId);
         });
 }
 
