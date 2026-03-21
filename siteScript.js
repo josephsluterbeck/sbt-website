@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }); 
 
 const SANITY_PROJECT_ID = 'orxxqp7k';
+const SANITY_ORGANIZATION_ID = 'oCAJBUVjO';
 const SANITY_DATASET = 'production';
 const SANITY_QUERY = encodeURIComponent(`*[_type in ["jobPost", "job"]] | order(coalesce(postedAt, _createdAt) desc){
     title,
