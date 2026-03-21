@@ -95,6 +95,31 @@ function formatPostedDate(isoDate) {
     return `Posted ${date.toLocaleDateString()}`;
 }
 
+function portableTextToPlainText(value) {
+    if (!value) {
+        return '';
+    }
+
+    if (typeof value === 'string') {
+        return value;
+    }
+
+    if (!Array.isArray(value)) {
+        return '';
+    }
+
+    return value
+        .filter(block => block && block._type === 'block' && Array.isArray(block.children))
+        .map(block =>
+            block.children
+                .filter(child => child && typeof child.text === 'string')
+                .map(child => child.text)
+                .join('')
+        )
+        .filter(Boolean)
+        .join('\n\n');
+}
+
 function renderJobs(jobs) {
     const jobsContainer = document.getElementById('jobs-list');
     if (!jobsContainer) {
@@ -127,10 +152,11 @@ function renderJobs(jobs) {
         meta.textContent = posted ? `${location} • ${posted}` : location;
         card.appendChild(meta);
 
-        if (job.description) {
+        const plainDescription = portableTextToPlainText(job.description);
+        if (plainDescription) {
             const description = document.createElement('p');
             description.className = 'job-description';
-            description.textContent = job.description;
+            description.textContent = plainDescription;
             card.appendChild(description);
         }
 
