@@ -496,6 +496,119 @@ section {
     color: var(--body-text);
 }
 
+/* Job application form (Formspree) */
+.jobs-apply-wrapper {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid #ddd;
+    max-width: 640px;
+}
+
+.jobs-apply-heading {
+    font-family: "Young Serif", serif;
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: var(--primary-text);
+    margin-bottom: 0.5rem;
+}
+
+.jobs-apply-intro {
+    font-family: "Bitter", serif;
+    color: var(--body-text);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.jobs-apply-form .form-row {
+    margin-bottom: 1.25rem;
+}
+
+.jobs-apply-form .form-row-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.jobs-apply-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-family: "Bitter", serif;
+    color: var(--body-text);
+    font-size: 0.95rem;
+}
+
+.jobs-apply-form .form-label {
+    font-weight: 600;
+    color: var(--primary-text);
+}
+
+.jobs-apply-form .form-required {
+    color: var(--accent-color);
+}
+
+.jobs-apply-form input[type="text"],
+.jobs-apply-form input[type="email"],
+.jobs-apply-form input[type="tel"],
+.jobs-apply-form select,
+.jobs-apply-form textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: "Bitter", serif;
+    font-size: 1rem;
+    color: var(--primary-text);
+    background-color: var(--primary-bg);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jobs-apply-form input:focus,
+.jobs-apply-form select:focus,
+.jobs-apply-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-text);
+    box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.12);
+}
+
+.jobs-apply-form input[type="file"] {
+    font-family: "Bitter", serif;
+    font-size: 0.95rem;
+    max-width: 100%;
+}
+
+.jobs-apply-form .form-hint {
+    font-size: 0.85rem;
+    color: var(--body-text);
+    margin-top: 0.35rem;
+    margin-bottom: 0;
+}
+
+.jobs-apply-form .form-note {
+    font-size: 0.85rem;
+    color: var(--body-text);
+    margin-bottom: 1rem;
+}
+
+.jobs-apply-form .form-submit {
+    display: inline-block;
+    margin-top: 0.25rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 22px;
+    background-color: var(--primary-text);
+    color: var(--primary-bg);
+    font-family: "Young Serif", serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--hover-transition);
+}
+
+.jobs-apply-form .form-submit:hover {
+    background-color: var(--body-text);
+}
+
 .section-header {
     position: absolute;
     top: 20px;
@@ -767,6 +880,19 @@ section {
 
     .job-title {
         font-size: 1.2rem;
+    }
+
+    .jobs-apply-form .form-row-split {
+        grid-template-columns: 1fr;
+    }
+
+    .jobs-apply-wrapper {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+    }
+
+    .jobs-apply-heading {
+        font-size: 1.35rem;
     }
 
     .card h3 {

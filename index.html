@@ -271,6 +271,57 @@
         <div class="section-header">Current Job Openings</div>
         <div class="jobs-container">
             <div id="jobs-list" class="jobs-list">Loading jobs...</div>
+
+            <div class="jobs-apply-wrapper" id="apply">
+                <h3 class="jobs-apply-heading">Apply online</h3>
+                <p class="jobs-apply-intro">Submit your contact information and résumé. We’ll get back to you as soon as we can.</p>
+                <form
+                    class="jobs-apply-form"
+                    action="https://formspree.io/f/xyknajjg"
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+                    <input type="hidden" name="_subject" value="Job application — Sluterbeck Tool &amp; Die">
+                    <input type="hidden" name="_next" value="https://sluterbecktool.com/#jobs">
+                    <div class="form-row form-row-split">
+                        <label class="form-group">
+                            <span class="form-label">Full name <span class="form-required" aria-hidden="true">*</span></span>
+                            <input type="text" name="name" required autocomplete="name" placeholder="Jane Smith">
+                        </label>
+                        <label class="form-group">
+                            <span class="form-label">Email <span class="form-required" aria-hidden="true">*</span></span>
+                            <input type="email" name="email" required autocomplete="email" placeholder="you@example.com">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Phone</span>
+                            <input type="tel" name="phone" autocomplete="tel" placeholder="(937) 555-0100">
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Position you’re applying for <span class="form-required" aria-hidden="true">*</span></span>
+                            <select id="apply-position" name="position" required aria-label="Position you are applying for"></select>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Cover letter or message</span>
+                            <textarea name="message" rows="5" placeholder="Tell us a bit about your experience…"></textarea>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-group">
+                            <span class="form-label">Résumé <span class="form-required" aria-hidden="true">*</span></span>
+                            <input type="file" name="upload" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        </label>
+                        <p class="form-hint">PDF or Word (.doc, .docx), max size per Formspree plan limits.</p>
+                    </div>
+                    <p class="form-note"><span class="form-required">*</span> Required fields</p>
+                    <button type="submit" class="form-submit">Submit application</button>
+                </form>
+            </div>
         </div>
     </section>
 
@@ -309,6 +360,6 @@
         </div>
     </footer>
 
-    <script src="siteScript.js?v=4"></script>
+    <script src="siteScript.js?v=5"></script>
 </body>
 </html> 

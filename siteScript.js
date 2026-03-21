@@ -172,15 +172,48 @@ function getSafeExternalUrl(rawUrl) {
     }
 }
 
+function populateApplyPositionSelect(jobs) {
+    const select = document.getElementById('apply-position');
+    if (!select) {
+        return;
+    }
+
+    const list = Array.isArray(jobs) ? jobs : [];
+    select.innerHTML = '';
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    placeholder.textContent = 'Select a position…';
+    select.appendChild(placeholder);
+
+    const general = document.createElement('option');
+    general.value = 'General application / inquiry';
+    general.textContent = 'General application / inquiry';
+    select.appendChild(general);
+
+    list.forEach(job => {
+        const title = (job.title || '').trim() || 'Untitled position';
+        const opt = document.createElement('option');
+        opt.value = title;
+        opt.textContent = title;
+        select.appendChild(opt);
+    });
+}
+
 function renderJobs(jobs) {
     const jobsContainer = document.getElementById('jobs-list');
     if (!jobsContainer) {
         return;
     }
 
+    const jobList = jobs || [];
+    populateApplyPositionSelect(jobList);
+
     jobsContainer.innerHTML = '';
 
-    if (!jobs || jobs.length === 0) {
+    if (jobList.length === 0) {
         const emptyState = document.createElement('p');
         emptyState.className = 'jobs-empty';
         emptyState.textContent = 'No job openings right now.';
@@ -188,7 +221,7 @@ function renderJobs(jobs) {
         return;
     }
 
-    jobs.forEach(job => {
+    jobList.forEach(job => {
         const card = document.createElement('article');
         card.className = 'job-card';
 
@@ -232,6 +265,8 @@ function loadJobs() {
     if (!jobsContainer) {
         return;
     }
+
+    populateApplyPositionSelect([]);
 
     const apiUrl = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2026-03-21/data/query/${SANITY_DATASET}?query=${SANITY_QUERY}`;
     const controller = new AbortController();
