@@ -283,6 +283,11 @@
                 >
                     <input type="hidden" name="_subject" value="Job application — Sluterbeck Tool &amp; Die">
                     <input type="hidden" name="_next" value="https://sluterbecktool.com/#apply">
+                    <!-- Honeypot: leave empty. Formspree rejects submissions if bots fill this. -->
+                    <div class="form-honey" aria-hidden="true">
+                        <label for="form-honey-field">Leave this field blank</label>
+                        <input type="text" id="form-honey-field" name="_gotcha" value="" autocomplete="off" tabindex="-1">
+                    </div>
                     <div class="form-row form-row-split">
                         <label class="form-group">
                             <span class="form-label">Full name <span class="form-required" aria-hidden="true">*</span></span>
@@ -353,6 +358,6 @@
         </div>
     </footer>
 
-    <script src="siteScript.js?v=8"></script>
+    <script src="siteScript.js?v=9"></script>
 </body>
 </html> 

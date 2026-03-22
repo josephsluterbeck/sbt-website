@@ -538,6 +538,23 @@ section {
     scroll-margin-top: 6rem;
 }
 
+/* Honeypot for Formspree (_gotcha) — hidden from sighted users, not focusable */
+.form-honey {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.jobs-apply-form {
+    position: relative;
+}
+
 .jobs-apply-form .form-row {
     margin-bottom: 1.25rem;
 }
