@@ -472,6 +472,25 @@ section {
     line-height: 1.7;
 }
 
+.job-description p,
+.job-description ul,
+.job-description ol {
+    margin: 0 0 0.75rem;
+}
+
+.job-description ul,
+.job-description ol {
+    padding-left: 1.25rem;
+}
+
+.job-description li {
+    margin-bottom: 0.25rem;
+}
+
+.job-description > :last-child {
+    margin-bottom: 0;
+}
+
 .job-apply {
     display: inline-block;
     margin-top: 0.85rem;

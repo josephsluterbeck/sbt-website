@@ -159,6 +159,74 @@ function getSafeDescription(job) {
     return '';
 }
 
+/**
+ * Renders Portable Text blocks as separate paragraphs/list items instead of
+ * flattening everything into one run-on paragraph, so each Sanity field
+ * (paragraph or bullet list item) stays visually distinct.
+ * Returns true if anything was appended.
+ */
+function renderDescriptionBlocks(container, blocks) {
+    let currentList = null;
+    let appended = false;
+
+    blocks.forEach(block => {
+        if (!block || typeof block !== 'object') {
+            return;
+        }
+
+        const text = portableTextToPlainText(block).trim();
+        if (!text) {
+            return;
+        }
+
+        if (block._type === 'block' && block.listItem) {
+            const tag = block.listItem === 'number' ? 'ol' : 'ul';
+            if (!currentList || currentList.tagName.toLowerCase() !== tag) {
+                currentList = document.createElement(tag);
+                container.appendChild(currentList);
+            }
+            const li = document.createElement('li');
+            li.textContent = text;
+            currentList.appendChild(li);
+        } else {
+            currentList = null;
+            const p = document.createElement('p');
+            p.textContent = text;
+            container.appendChild(p);
+        }
+
+        appended = true;
+    });
+
+    return appended;
+}
+
+/**
+ * Populates a description container, preferring structured Portable Text
+ * blocks (separate paragraphs/list items) and falling back to plain text
+ * split on blank lines if structured blocks aren't available.
+ */
+function populateDescription(container, job) {
+    if (Array.isArray(job.description) && job.description.length) {
+        if (renderDescriptionBlocks(container, job.description)) {
+            return true;
+        }
+    }
+
+    const plainDescription = getSafeDescription(job);
+    if (!plainDescription) {
+        return false;
+    }
+
+    const lines = plainDescription.split(/\n+/).map(line => line.trim()).filter(Boolean);
+    lines.forEach(line => {
+        const p = document.createElement('p');
+        p.textContent = line;
+        container.appendChild(p);
+    });
+    return lines.length > 0;
+}
+
 function getSafeExternalUrl(rawUrl) {
     if (!rawUrl || typeof rawUrl !== 'string') {
         return null;
@@ -273,11 +341,9 @@ function renderJobs(jobs) {
         meta.textContent = metaParts.join(' • ');
         card.appendChild(meta);
 
-        const plainDescription = getSafeDescription(job);
-        if (plainDescription) {
-            const description = document.createElement('p');
-            description.className = 'job-description';
-            description.textContent = plainDescription;
+        const description = document.createElement('div');
+        description.className = 'job-description';
+        if (populateDescription(description, job)) {
             card.appendChild(description);
         }
 

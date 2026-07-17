@@ -1,5 +1,25 @@
 {
   "dependencies": {
     "@sanity/client": "^7.20.0"
-  }
+  },
+  "name": "sbt-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sanityClient.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josephsluterbeck/sbt-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/josephsluterbeck/sbt-website/issues"
+  },
+  "homepage": "https://github.com/josephsluterbeck/sbt-website#readme"
 }
